@@ -1,9 +1,8 @@
-# Twilio Serverless Oauth Callback
+# Twilio Serverless OAuth Callback
 
-Twilio Serverless Functions to demonstrate Tri-Legged Oauth callbacks/webhooks to Box and Google Sheets
+Twilio Serverless Functions to demonstrate Tri-Legged OAuth callbacks/webhooks to Box and Google Sheets
 
-**Important: Twilio Functions are limited to ~20 executions / second, so this is purely for demonstration and/or
-relatively light use cases**
+**Important: Twilio Functions are limited to ~30 executions**
 
 This uses the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) with the [Twilio Serverless Plugin](https://www.twilio.com/docs/twilio-cli/plugins)
 
@@ -48,7 +47,7 @@ This uses the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) wi
 
 7.  Once deployed, visit your [Twilio Functions](https://www.twilio.com/console/functions/overview/services)
 
-8.  Copy to URL to the index.html and paste into a fresh browser tab. You should see the Oauth Buttons
+8.  Copy to URL to the index.html and paste into a fresh browser tab. You should see the OAuth Buttons
 
     - Click on either
     - If configured correctly (e.g. all the URLs and IDs were update from above steps), you should be redirected and and Authorize
@@ -64,7 +63,7 @@ This uses the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) wi
 _(Google changes their IAM console regularly, so keeping this relatively generic)_
 
     1. Visit Google IAM and create an OAuth 2.0 Client ID [Google IAM](https://console.developers.google.com/apis/credentials)
-    2. Provide a redirect URI * (Example: https://serverless-oauth-callback-8527-dev.twil.io/redirect_google) *
+    2. Provide a redirect URI * (Example: https://serverless-OAuth-callback-8527-dev.twil.io/redirect_google) *
         - You can get this URL the Twilio Function Editor [Twilio Functions](https://www.twilio.com/console/functions/overview/services)
     3. Copy the Client ID from this page (and add it to *.env and access.js)
     4. Copy the Client Secret from this page (and add it to *.env)
@@ -77,7 +76,7 @@ _(Google changes their IAM console regularly, so keeping this relatively generic
     3. Choose "Custom App"
     4. Select "User Authentication (OAuth 2.0)" on the Authentication Method modal
     5. Copy the Client ID (and add it to *.env and access.js)
-    6. Copy the Client Secret (and add it toe *.env)
-    7. Provide a valid Redirect URI * (Example: https://serverless-oauth-callback-8527-dev.twil.io/callback_box) *
+    6. Copy the Client Secret (and add it to *.env)
+    7. Provide a valid Redirect URI * (Example: https://serverless-OAuth-callback-8527-dev.twil.io/callback_box) *
     8. Check the box to provide "Write all files and folders stored in Box"
     9. Save your changes
