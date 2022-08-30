@@ -2,7 +2,7 @@
 
 Twilio Serverless Functions to demonstrate Tri-Legged OAuth callbacks/webhooks to Box and Google Sheets
 
-**Important: Twilio Functions are limited to ~30 executions**
+**Important: Twilio Functions are limited to ~30 concurrent executions**
 
 This uses the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) with the [Twilio Serverless Plugin](https://www.twilio.com/docs/twilio-cli/plugins)
 
