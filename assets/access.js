@@ -1,6 +1,6 @@
 let Box = {
   baseurl: "https://account.box.com/api/oauth2/authorize",
-  clientid: "gk356tfuqic9la95oj1mttxci43nx3zb",
+  clientid: "",
   resptype: "code",
 };
 
@@ -12,10 +12,9 @@ let Google = {
   baseurl: "https://accounts.google.com/o/oauth2/v2/auth",
   access_type: "offline", //require to receive refresh token from Google
   prompt: "consent", //required to force consent to generate refresh token
-  clientid:
-    "1025920631346-9ovp00unoe2vs5gm7qvalvpoh7hvkska.apps.googleusercontent.com",
+  clientid: "",
   scope: "https://www.googleapis.com/auth/spreadsheets",
-  redirect_uri: "https://quickstark.ngrok.io/redirect_google", //required
+  redirect_uri: "https://example.com", //required
   response_type: "code",
 };
 

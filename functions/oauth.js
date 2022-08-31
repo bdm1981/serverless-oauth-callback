@@ -1,5 +1,6 @@
 const querystring = require("querystring");
 const axios = require("axios");
+const qs = require("qs");
 const { write } = require("fs");
 
 // Use Twilioi Runtime helper to grab the function path
@@ -39,7 +40,7 @@ async function getInitialTokens(provider, code) {
     res.data,
     queryparams.query.grant_type
   );
-  console.log(nicePrint`SyncMapItem ${syncmapitem}`);
+  //console.log(nicePrint`SyncMapItem ${syncmapitem}`);
   return syncmapitem;
 }
 
@@ -55,33 +56,38 @@ async function getTokensForProvider(provider) {
     let tokendata = await readTokens(provider);
     let tokens = tokendata.data;
 
-    console.log(nicePrint`Provider Tokens ${tokens}`);
+    // console.log(nicePrint`Provider Tokens ${tokens}`);
 
     // Set query parms by provider
     let queryparams = getQueryForProvider(
       provider,
       "refresh_token",
       "",
-      tokens.refresh_token
+      tokens?.refresh_token
     );
 
-    let needrefresh = await needRefresh(tokens);
+    let needrefresh = true;
+    if (tokens) {
+      needrefresh = await needRefresh(tokens);
+    }
+
     console.log(`Token Refresh Needed? ${needrefresh}`);
     if (needrefresh) {
       // If expired, send refresh token in exchance for new access token
-      const res = await axios.post(
-        queryparams.authurl,
-        querystring.stringify(queryparams.query)
-      );
+      try {
+        const res = await axios(queryparams);
 
-      // Send the tokens to Sync to update the JSON object
-      const writetokens = await writeTokens(
-        provider,
-        res.data,
-        queryparams.query.grant_type
-      );
-      if ("access_token" in writetokens.data) {
-        return { data: res.data.access_token };
+        // Send the tokens to Sync to update the JSON object
+        const writetokens = await writeTokens(
+          provider,
+          res.data,
+          "client_credentials"
+        );
+        if ("access_token" in writetokens.data) {
+          return { data: res.data.access_token };
+        }
+      } catch (err) {
+        console.log(err);
       }
     } else {
       // If still valid, just return current access token
@@ -129,6 +135,7 @@ async function readTokens(provider) {
  * @returns {Object} SyncMapItem that was written
  */
 async function writeTokens(provider, res, grant_type) {
+  console.log("writing token");
   // Timestamp
   const date = new Date();
   const timestamp = date.toISOString();
@@ -141,7 +148,7 @@ async function writeTokens(provider, res, grant_type) {
   let refresh =
     provider == "google" && grant_type == "refresh_token"
       ? currenttokens.refresh_token
-      : res.refresh_token;
+      : res?.refresh_token;
 
   // Define the Tokens we need to write
   let newtokens = {
@@ -186,6 +193,23 @@ function getQueryForProvider(provider, grant_type, code, refresh_token) {
   let queryparams = {};
 
   switch (provider) {
+    case "azure":
+      queryparams = {
+        method: "post",
+        url: process.env.AZURE_AUTH_URL,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          grant_type: "client_credentials",
+          client_id: process.env.AZURE_CLIENT_ID,
+          client_secret: process.env.AZURE_CLIENT_SECRET,
+          scope: process.env.AZURE_SCOPE,
+        }),
+      };
+
+      return queryparams;
+
     case "box":
       queryparams = {
         authurl: "https://api.box.com/oauth2/token",
@@ -222,7 +246,7 @@ function getQueryForProvider(provider, grant_type, code, refresh_token) {
                 code,
                 client_id: process.env.GOOGLE_CLIENT_ID,
                 client_secret: process.env.GOOGLE_CLIENT_SECRET,
-                redirect_uri: "https://quickstark.ngrok.io/redirect_google",
+                redirect_uri: "https://example.com",
               },
       };
       return queryparams;

@@ -15,7 +15,11 @@ This uses the [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) wi
     - Setup Google OAuth 2 Profile and Sheets Access (see below)
     - Setup Box in a similar but much easier way (see below))
 
-3.  Create .env file in root and provide keys for the following:
+3.  Copy sample.env to .env file in root and provide keys for the following:
+    AZURE_CLIENT_ID=
+    AZURE_CLIENT_SECRET=
+    AZURE_SCOPE=
+    RELAY_URL=
     SYNC_NAME="<Name for Twilio Sync Service and Sync Map>"
     BOX_CLIENT_ID="<copied from Box Developer Console>"
     BOX_CLIENT_SECRET="<copied from Box Developer Console>"
